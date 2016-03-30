@@ -6,7 +6,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -17,18 +21,18 @@ import java.util.zip.GZIPOutputStream;
  */
 public class Client {
     public static void main(String[] args) {
-//        try {
-//            InetAddress inetAddress = InetAddress.getLocalHost();
-//            Socket socket = new Socket(inetAddress, 8088);
-//            OutputStream os = socket.getOutputStream();
-//            os.write(new String("aaa").getBytes());
-//            os.close();
-//            socket.close();
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            Socket socket = new Socket(inetAddress, 8088);
+            OutputStream os = socket.getOutputStream();
+            os.write(new String("aaa").getBytes());
+            os.close();
+            socket.close();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 //        BufferedOutputStream bos = new BufferedOutputStream(baos);
@@ -47,42 +51,24 @@ public class Client {
 //            e.printStackTrace();
 //        }
 
-        byte[] bytes = compress("dfgdfgge4f@#$BBRdf1848{}>1784818df1gb8".getBytes());
-
-        String s = null;
-        try {
-            s = new String(bytes, "ISO-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        System.out.println("result:" + s);
-
-        try {
-            byte[] result = decompress(s.getBytes("ISO-8859-1");
-            System.out.println("result:" + decompress(s.getBytes("ISO-8859-1")));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        byte[] bytes = compress("dfgdfgge4f@#$BBRdf1848{}>1784818df1gb8".getBytes());
+//
+//        String s = null;
+//        try {
+//            s = new String(bytes, "ISO-8859-1");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("result:" + s);
+//
+//        try {
+//            byte[] result = decompress(s.getBytes("ISO-8859-1"));
+//            System.out.println("result:" + new String(result));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
     }
 
-//    private static String compress(String source) {
-//        if (source != null && !source.isEmpty()) {
-//            GZIPOutputStream gzipos = null;
-//            ByteArrayOutputStream baos = null;
-//            try {
-//                baos = new ByteArrayOutputStream();
-//                gzipos = new GZIPOutputStream(baos);
-//                gzipos.write(source.getBytes());
-//                return baos.toString("ISO-8859-1");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                closeSilently(gzipos);
-//                closeSilently(baos);
-//            }
-//        }
-//        return null;
-//    }
 
     private static String compress(String source) {
         if (source != null && source.length() > 0) {
@@ -137,12 +123,10 @@ public class Client {
             return null;
         }
         ByteArrayOutputStream baos = null;
-        ByteArrayInputStream bais = null;
         GZIPInputStream gzipis = null;
         try {
             baos = new ByteArrayOutputStream();
-            bais = new ByteArrayInputStream(source);
-            gzipis = new GZIPInputStream(bais);
+            gzipis = new GZIPInputStream(new ByteArrayInputStream(source));
             byte[] buffer = new byte[512];
             int offset = -1;
             while ((offset = gzipis.read(buffer)) != -1) {
@@ -155,7 +139,6 @@ public class Client {
             e.printStackTrace();
         } finally {
             closeSilently(gzipis);
-            closeSilently(bais);
             closeSilently(baos);
         }
         return null;

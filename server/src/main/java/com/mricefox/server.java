@@ -27,19 +27,19 @@ public class Server {
                     baos.write(buf, 0, offset);
                 }
 
-                baos.close();
-                is.close();
-                socket.close();
-
-                byte[] receivedBytes = baos.toByteArray();
-
-                String receivedStr = new String(receivedBytes, "UTF-8");
-                System.out.println("receivedBytes:" + receivedBytes.length);
-                System.out.println("receivedStr:" + receivedStr);
-
 //                baos.close();
 //                is.close();
 //                socket.close();
+
+                byte[] receivedBytes = baos.toByteArray();
+
+                String receivedStr = new String(receivedBytes);
+                System.out.println("receivedBytes:" + receivedBytes.length);
+                System.out.println("receivedStr:" + receivedStr);
+
+                baos.close();
+                is.close();
+                socket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
