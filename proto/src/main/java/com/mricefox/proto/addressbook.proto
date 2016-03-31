@@ -1,6 +1,6 @@
-package android_protobuf_sample;
+package proto;
 
-option java_package = "com.mricefox.android_protobuf_sample";
+option java_package = "com.mricefox.proto";
 option java_outer_classname = "AddressBookProtos";
 
 message Person {
